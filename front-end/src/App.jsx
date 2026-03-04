@@ -3,10 +3,11 @@ import { useState } from 'react'
 import './App.css'
 import HomePage from './pages/HomePage'
 import AboutPage from './pages/AboutPage'
-import ArticlePage from './pages/ArticlePage'
+import ArticlePage, { loader as articleLoader} from './pages/ArticlePage'
 import ArticlesListPage from './pages/ArticlesListPage'
 import Layout from './Layout'
 import NotFoundPage from './pages/NotFoundPage'
+import axios from 'axios'
 
 const routes = [{
   path: '/',
@@ -25,7 +26,8 @@ const routes = [{
   },
   {
     path: '/articles/:name',
-    element: <ArticlePage />
+    element: <ArticlePage />,
+    loader: articleLoader
   }]
 }]
 
