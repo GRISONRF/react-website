@@ -1,11 +1,22 @@
 import express from 'express';
 import { MongoClient, ServerApiVersion } from 'mongodb';
+import admin from 'firebase-admin';
+import fs from 'fs';
 
-const articleInfo = [
-    { name: 'learn-node', upvotes: 0, comments: [] },
-    { name: 'learn-react', upvotes: 0, comments: [] },
-    { name: 'mongodb', upvotes: 0, comments: [] },
-]
+const credentials = JSON.parse(
+    fs.readFileSync('./credentials.json')
+)
+
+admin.initializeApp({
+  credential: admin.credential.cert(credentials)
+});
+
+
+// const articleInfo = [
+//     { name: 'learn-node', upvotes: 0, comments: [] },
+//     { name: 'learn-react', upvotes: 0, comments: [] },
+//     { name: 'mongodb', upvotes: 0, comments: [] },
+// ]
 
 const app = express();
 
