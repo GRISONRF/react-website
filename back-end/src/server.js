@@ -1,11 +1,22 @@
 import express from 'express';
 import { MongoClient, ServerApiVersion } from 'mongodb';
+import admin from 'firebase-admin';
+import fs from 'fs';
 
-const articleInfo = [
-    { name: 'learn-node', upvotes: 0, comments: [] },
-    { name: 'learn-react', upvotes: 0, comments: [] },
-    { name: 'mongodb', upvotes: 0, comments: [] },
-]
+const credentials = JSON.parse(
+    fs.readFileSync('./credentials.json')
+)
+
+admin.initializeApp({
+  credential: admin.credential.cert(credentials)
+});
+
+
+// const articleInfo = [
+//     { name: 'learn-node', upvotes: 0, comments: [] },
+//     { name: 'learn-react', upvotes: 0, comments: [] },
+//     { name: 'mongodb', upvotes: 0, comments: [] },
+// ]
 
 const app = express();
 
@@ -35,16 +46,40 @@ app.get('/api/articles/:name', async (req, res) => {
     res.json(article);
 });
 
+app.use(async function(req, res, next) {
+    const {authtoken} = req.headers;
+
+    if (authtoken) {
+        const user = await admin.auth().verifyIdToken(authtoken);
+        req.user = user;
+        next();
+    } else {
+        res.sendStatus(400);
+    }
+
+})
+
 app.post('/api/articles/:name/upvote', async (req, res) => {
     const { name } = req.params;
+    const { uid } = req.user;
 
-    const updatedArticle = await db.collection('articles').findOneAndUpdate({ name }, {
-        $inc: { upvotes: 1 }
-    }, {
-        returnDocument: "after",
-    });
+    const articles = await db.collection('articles').findOne({ name });
 
-    res.json(updatedArticle);
+    const upvoteIds = article.upvoteIds || [];
+    const canUpvote = uid && !upvoteIds.includes(uid);
+
+    if (!canUpvote) {
+        const updatedArticle = await db.collection('articles').findOneAndUpdate({ name }, {
+            $inc: { upvotes: 1 },
+            $push: { upvotesId: uid }
+        }, {
+            returnDocument: "after",
+        });
+        res.json(updatedArticle);
+    } else {
+        res.sendStatus(403);
+    }
+
 });
 
 app.post('/api/articles/:name/comments', async (req, res) => {
