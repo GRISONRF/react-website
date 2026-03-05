@@ -3,6 +3,10 @@ import { MongoClient, ServerApiVersion } from 'mongodb';
 import admin from 'firebase-admin';
 import fs from 'fs';
 
+import Parser from 'rss-parser';
+const parser = new Parser();
+const MEDIUM_URL = "https://medium.com/feed/@grisonrf";
+
 const credentials = JSON.parse(
     fs.readFileSync('./credentials.json')
 )
@@ -10,13 +14,6 @@ const credentials = JSON.parse(
 admin.initializeApp({
   credential: admin.credential.cert(credentials)
 });
-
-
-// const articleInfo = [
-//     { name: 'learn-node', upvotes: 0, comments: [] },
-//     { name: 'learn-react', upvotes: 0, comments: [] },
-//     { name: 'mongodb', upvotes: 0, comments: [] },
-// ]
 
 const app = express();
 
@@ -47,17 +44,19 @@ app.get('/api/articles/:name', async (req, res) => {
 });
 
 app.use(async function(req, res, next) {
-    const {authtoken} = req.headers;
+    const { authtoken } = req.headers;
 
     if (authtoken) {
-        const user = await admin.auth().verifyIdToken(authtoken);
-        req.user = user;
-        next();
-    } else {
-        res.sendStatus(400);
+        try {
+            const user = await admin.auth().verifyIdToken(authtoken);
+            req.user = user;
+        } catch (e) {
+            console.log("Invalid token");
+        }
     }
 
-})
+    next();
+});
 
 app.post('/api/articles/:name/upvote', async (req, res) => {
     const { name } = req.params;
@@ -92,6 +91,65 @@ app.post('/api/articles/:name/comments', async (req, res) => {
     }, { returnDocument: "after",});
 
     res.json(updatedArticle)
+});
+
+app.get("/api/medium-articles", async (req, res) => {
+    try {
+        const feed = await parser.parseURL(MEDIUM_URL);
+
+        const articles = feed.items.map(item => {
+        const slug = item.link.split("/").pop().split("?")[0];
+
+        return {
+            name: slug,
+            title: item.title,
+            description: item.contentSnippet,
+            content: item["content:encoded"]
+        };
+    });
+
+        // Ensure article exists in MongoDB
+        for (const article of articles) {
+            const existing = await db.collection("articles").findOne({
+                name: article.name
+            });
+
+            if (!existing) {
+                await db.collection("articles").insertOne({
+                    name: article.name,
+                    upvotes: 0,
+                    upvoteIds: [],
+                    comments: []
+                });
+            }
+        }
+
+        res.json(articles);
+
+    } catch (err) {
+        console.error(err);
+        res.status(500).json({ error: "Failed to load Medium articles" });
+    }
+});
+
+app.get("/api/medium-articles/:name", async (req, res) => {
+    const { name } = req.params;
+
+    const feed = await parser.parseURL(MEDIUM_URL);
+
+    const article = feed.items.find(item =>
+        item.link.includes(name)
+    );
+
+    if (!article) {
+        return res.sendStatus(404);
+    }
+
+    res.json({
+        name,
+        title: article.title,
+        content: article["content:encoded"]
+    });
 });
 
 async function start() {
