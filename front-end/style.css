@@ -19,3 +19,37 @@
 .article-body p {
   line-height: 1.6;
 }
+
+/* Ensure the container is visible */
+.articles-list {
+    display: flex;
+    flex-direction: column;
+    gap: 1.5rem;
+    padding: 20px;
+}
+
+/* Style the cards to stand out */
+.article-card {
+    text-decoration: none; /* Removes underline */
+    color: #ffffff;        /* Forces text to white */
+    background-color: #2a2a2a; /* Slightly lighter than the background */
+    padding: 20px;
+    border-radius: 8px;
+    transition: transform 0.2s, background-color 0.2s;
+    border: 1px solid #444;
+}
+
+.article-card:hover {
+    background-color: #333;
+    transform: translateY(-2px);
+}
+
+.article-card h3 {
+    margin: 0 0 10px 0;
+    color: #61dafb; /* React blue or a bright accent color */
+}
+
+.article-card p {
+    color: #ccc; /* Light grey for the description */
+    font-size: 0.9rem;
+}
