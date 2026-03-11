@@ -9,12 +9,12 @@
 /* Individual list item spacing */
 .articles-bullet-list li {
     margin-bottom: 12px;
-    color: #61dafb; /* Bullet color */
+    color: #966106; /* Bullet color */
 }
 
 /* The actual clickable link */
 .article-link {
-    color: #61dafb !important; /* Bright React Blue */
+    color: #ff88b2 !important; /* Bright React Blue */
     text-decoration: none;
     font-size: 1.2rem;
     font-weight: 500;
@@ -44,7 +44,7 @@
 
 /* The box itself */
 .login-box {
-    background: #1e1e1e;
+    background: #872c2c;
     padding: 40px;
     border-radius: 12px;
     border: 1px solid #333;
@@ -74,7 +74,7 @@
 
 .login-box input:focus {
     outline: none;
-    border-color: #61dafb;
+    border-color: #d6a411;
     background: #333;
 }
 
@@ -82,7 +82,7 @@
 .login-box button {
     width: 100%;
     padding: 12px;
-    background-color: #61dafb;
+    background-color: #d6a411;
     color: #282c34;
     border: none;
     border-radius: 6px;
@@ -93,7 +93,7 @@
 }
 
 .login-box button:hover {
-    background-color: #4fa8c7;
+    background-color: #f983f7;
 }
 
 /* The "Create Account" link */
@@ -106,7 +106,7 @@
 }
 
 .signup-link:hover {
-    color: #61dafb;
+    color: #f983f7;
     text-decoration: underline;
 }
 .comments-section {
@@ -141,7 +141,7 @@
 }
 
 .comment-author {
-    color: #61dafb; /* React Blue */
+    color: #fb61bb; /* React Blue */
     font-weight: bold;
     font-size: 1rem;
 }
@@ -209,12 +209,12 @@
 .add-comment-form input:focus, 
 .add-comment-form textarea:focus {
     outline: none;
-    border-color: #61dafb; /* Glow blue on focus */
+    border-color: #840636; /* Glow blue on focus */
 }
 
 .add-comment-form button {
-    background-color: #61dafb;
-    color: #1e1e1e;
+    background-color: #840636;
+    color: #f964f6;
     border: none;
     padding: 12px 24px;
     border-radius: 6px;
@@ -225,7 +225,7 @@
 }
 
 .add-comment-form button:hover {
-    background-color: #4fa8c7;
+    background-color: #ae2447;
 }
 
 /* Hero Section Layout */
@@ -243,7 +243,7 @@
 .home-container h1 {
     font-size: 3.5rem;
     margin-bottom: 0.5rem;
-    background: linear-gradient(90deg, #61dafb, #a29bfe);
+    background: linear-gradient(90deg, #d6a411, #a29bfe);
     -webkit-background-clip: text;
     -webkit-text-fill-color: transparent;
 }
@@ -278,7 +278,7 @@
     font-weight: bold;
     font-size: 1rem;
     transition: all 0.3s ease; /* Smooth color transition */
-    border: 2px solid #61dafb; /* Blue border for both */
+    border: 2px solid #786e19; /* Blue border for both */
     display: inline-block;
     text-align: center;
     min-width: 160px;
@@ -286,23 +286,23 @@
 
 /* The Blue Button (Starts Blue -> Turns Black) */
 .cta-blue {
-    background-color: #61dafb;
-    color: #282c34;
+    background-color: #840636;
+    color: #f981af;
 }
 
 .cta-blue:hover {
-    background-color: #1a1a1a;
-    color: #61dafb;
-    border-color: #61dafb;
+    background-color: #966106;
+    color: #f964f6;
+    border-color: #966106;
 }
 
 /* The Black Button (Starts Black -> Turns Blue) */
 .cta-black {
-    background-color: #1a1a1a;
-    color: #61dafb;
+    background-color: #720470;
+    color: #f983f7;
 }
 
 .cta-black:hover {
-    background-color: #61dafb;
-    color: #282c34;
+    background-color: #966106;
+    color: #f964f6
 }
