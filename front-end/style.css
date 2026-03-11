@@ -33,3 +33,79 @@
     margin-left: 15px;
     font-family: monospace;
 }
+
+/* Center everything on the screen */
+.login-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 80vh;
+}
+
+/* The box itself */
+.login-box {
+    background: #1e1e1e;
+    padding: 40px;
+    border-radius: 12px;
+    border: 1px solid #333;
+    box-shadow: 0 10px 30px rgba(0,0,0,0.5);
+    width: 100%;
+    max-width: 400px;
+    text-align: center;
+}
+
+.login-box h1 {
+    margin-bottom: 30px;
+    color: #ffffff;
+}
+
+/* Style the inputs */
+.login-box input {
+    width: 100%;
+    padding: 12px;
+    margin-bottom: 20px;
+    background: #2a2a2a;
+    border: 1px solid #444;
+    border-radius: 6px;
+    color: white;
+    font-size: 1rem;
+    box-sizing: border-box; /* Ensures padding doesn't break width */
+}
+
+.login-box input:focus {
+    outline: none;
+    border-color: #61dafb;
+    background: #333;
+}
+
+/* The Button */
+.login-box button {
+    width: 100%;
+    padding: 12px;
+    background-color: #61dafb;
+    color: #282c34;
+    border: none;
+    border-radius: 6px;
+    font-weight: bold;
+    font-size: 1rem;
+    cursor: pointer;
+    transition: background 0.3s ease;
+}
+
+.login-box button:hover {
+    background-color: #4fa8c7;
+}
+
+/* The "Create Account" link */
+.signup-link {
+    display: block;
+    margin-top: 20px;
+    color: #888;
+    text-decoration: none;
+    font-size: 0.9rem;
+}
+
+.signup-link:hover {
+    color: #61dafb;
+    text-decoration: underline;
+}
