@@ -3,6 +3,10 @@ import { MongoClient, ServerApiVersion } from 'mongodb';
 import admin from 'firebase-admin';
 import fs from 'fs';
 
+import Parser from 'rss-parser';
+const parser = new Parser();
+const MEDIUM_URL = "https://medium.com/feed/@grisonrf";
+
 const credentials = JSON.parse(
     fs.readFileSync('./credentials.json')
 )
@@ -10,13 +14,6 @@ const credentials = JSON.parse(
 admin.initializeApp({
   credential: admin.credential.cert(credentials)
 });
-
-
-// const articleInfo = [
-//     { name: 'learn-node', upvotes: 0, comments: [] },
-//     { name: 'learn-react', upvotes: 0, comments: [] },
-//     { name: 'mongodb', upvotes: 0, comments: [] },
-// ]
 
 const app = express();
 
@@ -47,31 +44,37 @@ app.get('/api/articles/:name', async (req, res) => {
 });
 
 app.use(async function(req, res, next) {
-    const {authtoken} = req.headers;
+    const { authtoken } = req.headers;
 
     if (authtoken) {
-        const user = await admin.auth().verifyIdToken(authtoken);
-        req.user = user;
-        next();
-    } else {
-        res.sendStatus(400);
+        try {
+            const user = await admin.auth().verifyIdToken(authtoken);
+            req.user = user;
+        } catch (e) {
+            console.log("Invalid token");
+        }
     }
 
-})
+    next();
+});
 
 app.post('/api/articles/:name/upvote', async (req, res) => {
     const { name } = req.params;
-    const { uid } = req.user;
+    const { uid } = req.user  || {};
 
-    const articles = await db.collection('articles').findOne({ name });
+    if (!uid) return res.status(401).send("Must be logged in to upvote");
+
+    const article = await db.collection('articles').findOne({ name });
+
+    if (!article) return res.sendStatus(404);
 
     const upvoteIds = article.upvoteIds || [];
-    const canUpvote = uid && !upvoteIds.includes(uid);
-
-    if (!canUpvote) {
+    const hasUpvoted = upvoteIds.includes(uid);
+    
+    if (!hasUpvoted) {
         const updatedArticle = await db.collection('articles').findOneAndUpdate({ name }, {
             $inc: { upvotes: 1 },
-            $push: { upvotesId: uid }
+            $push: { upvoteId: uid }
         }, {
             returnDocument: "after",
         });
@@ -92,6 +95,63 @@ app.post('/api/articles/:name/comments', async (req, res) => {
     }, { returnDocument: "after",});
 
     res.json(updatedArticle)
+});
+
+app.get("/api/medium-articles", async (req, res) => {
+    try {
+        // Wrap the Medium sync in its own try/catch
+        try {
+            const feed = await parser.parseURL(MEDIUM_URL);
+            for (const item of feed.items) {
+                const slug = item.link.split("/").pop().split("?")[0];
+                await db.collection("articles").updateOne(
+                    { name: slug },
+                    { 
+                        $setOnInsert: { 
+                            name: slug,
+                            title: item.title,
+                            description: item.contentSnippet,
+                            content: item["content:encoded"],
+                            upvotes: 0,
+                            upvoteIds: [],
+                            comments: []
+                        } 
+                    },
+                    { upsert: true }
+                );
+            }
+        } catch (mediumErr) {
+            console.log("⚠️ Medium Sync failed (Rate Limited), loading from DB only.");
+        }
+
+        // ALWAYS return the DB results, regardless of Medium status
+        const allArticles = await db.collection("articles").find({}).toArray();
+        res.json(allArticles);
+
+    } catch (err) {
+        console.error("Database Error:", err);
+        res.status(500).json({ error: "Failed to load articles from database" });
+    }
+});
+
+app.get("/api/medium-articles/:name", async (req, res) => {
+    const { name } = req.params;
+
+    const feed = await parser.parseURL(MEDIUM_URL);
+
+    const article = feed.items.find(item =>
+        item.link.includes(name)
+    );
+
+    if (!article) {
+        return res.sendStatus(404);
+    }
+
+    res.json({
+        name,
+        title: article.title,
+        content: article["content:encoded"]
+    });
 });
 
 async function start() {

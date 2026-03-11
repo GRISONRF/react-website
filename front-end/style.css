@@ -1,0 +1,308 @@
+/* Container styling */
+.articles-bullet-list {
+    list-style-type: disc;
+    padding-left: 20px;
+    max-width: 800px;
+    margin: 0 auto;
+}
+
+/* Individual list item spacing */
+.articles-bullet-list li {
+    margin-bottom: 12px;
+    color: #966106; /* Bullet color */
+}
+
+/* The actual clickable link */
+.article-link {
+    color: #ff88b2 !important; /* Bright React Blue */
+    text-decoration: none;
+    font-size: 1.2rem;
+    font-weight: 500;
+    transition: color 0.2s;
+}
+
+.article-link:hover {
+    color: #ffffff !important;
+    text-decoration: underline;
+}
+
+/* Small text for upvotes/comments next to the title */
+.article-meta {
+    color: #666;
+    font-size: 0.85rem;
+    margin-left: 15px;
+    font-family: monospace;
+}
+
+/* Center everything on the screen */
+.login-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 80vh;
+}
+
+/* The box itself */
+.login-box {
+    background: #872c2c;
+    padding: 40px;
+    border-radius: 12px;
+    border: 1px solid #333;
+    box-shadow: 0 10px 30px rgba(0,0,0,0.5);
+    width: 100%;
+    max-width: 400px;
+    text-align: center;
+}
+
+.login-box h1 {
+    margin-bottom: 30px;
+    color: #ffffff;
+}
+
+/* Style the inputs */
+.login-box input {
+    width: 100%;
+    padding: 12px;
+    margin-bottom: 20px;
+    background: #2a2a2a;
+    border: 1px solid #444;
+    border-radius: 6px;
+    color: white;
+    font-size: 1rem;
+    box-sizing: border-box; /* Ensures padding doesn't break width */
+}
+
+.login-box input:focus {
+    outline: none;
+    border-color: #d6a411;
+    background: #333;
+}
+
+/* The Button */
+.login-box button {
+    width: 100%;
+    padding: 12px;
+    background-color: #d6a411;
+    color: #282c34;
+    border: none;
+    border-radius: 6px;
+    font-weight: bold;
+    font-size: 1rem;
+    cursor: pointer;
+    transition: background 0.3s ease;
+}
+
+.login-box button:hover {
+    background-color: #f983f7;
+}
+
+/* The "Create Account" link */
+.signup-link {
+    display: block;
+    margin-top: 20px;
+    color: #888;
+    text-decoration: none;
+    font-size: 0.9rem;
+}
+
+.signup-link:hover {
+    color: #f983f7;
+    text-decoration: underline;
+}
+.comments-section {
+    margin-top: 40px;
+    border-top: 1px solid #333;
+    padding-top: 20px;
+}
+
+.comments-section h3 {
+    color: #ffffff;
+    margin-bottom: 20px;
+}
+
+.comment-item {
+    background-color: #1e1e1e;
+    border: 1px solid #333;
+    border-radius: 8px;
+    padding: 15px;
+    margin-bottom: 15px;
+    transition: border-color 0.2s;
+}
+
+.comment-item:hover {
+    border-color: #444;
+}
+
+.comment-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 10px;
+}
+
+.comment-author {
+    color: #fb61bb; /* React Blue */
+    font-weight: bold;
+    font-size: 1rem;
+}
+
+.comment-date {
+    color: #666;
+    font-size: 0.75rem;
+}
+
+.comment-text {
+    color: #e0e0e0;
+    line-height: 1.5;
+    margin: 0;
+}
+
+.no-comments {
+    color: #888;
+    font-style: italic;
+    text-align: center;
+    padding: 20px;
+}
+
+.add-comment-form {
+    background: #1e1e1e;
+    border: 1px solid #333;
+    padding: 25px;
+    border-radius: 12px;
+    margin: 30px 0;
+    max-width: 800px;
+}
+
+.add-comment-form h3 {
+    margin-top: 0;
+    margin-bottom: 20px;
+    color: #ffffff;
+}
+
+.add-comment-form label {
+    display: flex;
+    flex-direction: column; /* Stack label text on top of input */
+    margin-bottom: 15px;
+    color: #888;
+    font-size: 0.9rem;
+    font-weight: bold;
+}
+
+.add-comment-form span {
+    margin-bottom: 8px;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+}
+
+.add-comment-form input, 
+.add-comment-form textarea {
+    background: #2a2a2a;
+    border: 1px solid #444;
+    border-radius: 6px;
+    padding: 12px;
+    color: white;
+    font-family: inherit;
+    font-size: 1rem;
+    transition: border-color 0.2s;
+}
+
+.add-comment-form input:focus, 
+.add-comment-form textarea:focus {
+    outline: none;
+    border-color: #840636; /* Glow blue on focus */
+}
+
+.add-comment-form button {
+    background-color: #840636;
+    color: #f964f6;
+    border: none;
+    padding: 12px 24px;
+    border-radius: 6px;
+    font-weight: bold;
+    cursor: pointer;
+    font-size: 1rem;
+    transition: background 0.2s;
+}
+
+.add-comment-form button:hover {
+    background-color: #ae2447;
+}
+
+/* Hero Section Layout */
+.home-container {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+    min-height: 70vh;
+    padding: 0 20px;
+}
+
+/* Typography Improvements */
+.home-container h1 {
+    font-size: 3.5rem;
+    margin-bottom: 0.5rem;
+    background: linear-gradient(90deg, #d6a411, #a29bfe);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+}
+
+.home-container h3 {
+    font-size: 1.5rem;
+    color: #888;
+    margin-bottom: 2rem;
+    font-weight: 400;
+}
+
+.home-container p {
+    max-width: 600px;
+    line-height: 1.8;
+    font-size: 1.1rem;
+    color: #cccccc;
+}
+
+/* Container for the buttons to keep them centered and spaced */
+.cta-buttons {
+    display: flex;
+    flex-wrap: wrap; /* Allows buttons to wrap on smaller screens */
+    gap: 15px;
+    margin-top: 30px;
+}
+
+/* Base style for ALL buttons */
+.cta-blue, .cta-black {
+    padding: 12px 24px;
+    border-radius: 8px;
+    text-decoration: none;
+    font-weight: bold;
+    font-size: 1rem;
+    transition: all 0.3s ease; /* Smooth color transition */
+    border: 2px solid #786e19; /* Blue border for both */
+    display: inline-block;
+    text-align: center;
+    min-width: 160px;
+}
+
+/* The Blue Button (Starts Blue -> Turns Black) */
+.cta-blue {
+    background-color: #840636;
+    color: #f981af;
+}
+
+.cta-blue:hover {
+    background-color: #966106;
+    color: #f964f6;
+    border-color: #966106;
+}
+
+/* The Black Button (Starts Black -> Turns Blue) */
+.cta-black {
+    background-color: #720470;
+    color: #f983f7;
+}
+
+.cta-black:hover {
+    background-color: #966106;
+    color: #f964f6
+}
