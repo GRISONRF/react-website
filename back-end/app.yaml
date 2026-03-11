@@ -1,0 +1,6 @@
+includes:
+  - prod-env.yaml
+runtime: nodejs20
+env: standard
+
+entrypoint: node src/server.js

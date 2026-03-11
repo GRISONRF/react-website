@@ -306,3 +306,41 @@
     background-color: #966106;
     color: #f964f6
 }
+
+.article-body img {
+    max-width: 100%;
+    height: auto;
+    display: block;
+    margin: 20px auto;
+}
+
+.medium-disclaimer {
+    margin-top: 50px;
+    padding: 20px;
+    background-color: #1a1a1a;
+    border-radius: 8px;
+    border-left: 4px solid #61dafb; /* Your blue accent */
+}
+
+.medium-disclaimer hr {
+    border: 0;
+    border-top: 1px solid #333;
+    margin-bottom: 20px;
+}
+
+.medium-disclaimer p {
+    color: #999;
+    font-size: 0.95rem;
+    line-height: 1.6;
+}
+
+.medium-disclaimer a {
+    color: #61dafb;
+    text-decoration: underline;
+    margin: 0 5px;
+    font-weight: bold;
+}
+
+.medium-disclaimer strong {
+    color: #e0e0e0;
+}

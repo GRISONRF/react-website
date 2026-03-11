@@ -2,6 +2,12 @@ import express from 'express';
 import { MongoClient, ServerApiVersion } from 'mongodb';
 import admin from 'firebase-admin';
 import fs from 'fs';
+import path from 'path';
+
+import { fileURLToPath } from 'url';
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = path.dirname(__filename);
+const distPath = path.resolve(__dirname, '..', 'dist');
 
 import Parser from 'rss-parser';
 const parser = new Parser();
@@ -16,13 +22,13 @@ admin.initializeApp({
 });
 
 const app = express();
-
 app.use(express.json());
-
 let db;
 
 async function connectToDB() {
-    const uri = 'mongodb://127.0.0.1:27017';
+    const uri = !process.env.MONGODB_USERNAME 
+    ? 'mongodb://127.0.0.1:27017' 
+    : `mongodb+srv://${process.env.MONGODB_USERNAME}:${process.env.MONGODB_PASSWORD}@cluster0.fgj7d0n.mongodb.net/?appName=Cluster0`
 
     const client = new MongoClient(uri, {
         serverApi: {
@@ -36,6 +42,19 @@ async function connectToDB() {
 
     db = client.db('full-stack-react-db');
 }
+
+app.use(express.static(distPath));
+// app.use(express.static(path.join(__dirname, '../dist')));
+
+// app.get(/^(?!\/api).+/, (req, res) => {
+app.get(/^\/(?!api).*/, (req, res) => {
+    const indexPath = path.join(distPath, 'index.html');
+    if (fs.existsSync(indexPath)) {
+        res.sendFile(indexPath);
+    } else {
+        res.status(404).send("Frontend build not found.");
+    }
+});
 
 app.get('/api/articles/:name', async (req, res) => {
     const { name } = req.params;
@@ -154,10 +173,12 @@ app.get("/api/medium-articles/:name", async (req, res) => {
     });
 });
 
+const PORT = process.env.PORT || 8000;
+
 async function start() {
     await connectToDB();
-    app.listen(8000, function () {
-        console.log('Server is listening on port 8000');
+    app.listen(PORT, function () {
+        console.log('Server is listening on port ' + PORT);
     });
 }
 

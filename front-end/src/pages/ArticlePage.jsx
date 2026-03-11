@@ -9,9 +9,10 @@ import useUser from '../useUser';
 export default function ArticlePage() {
   const { name } = useParams();
   console.log("Article Slug from URL:", name);
-  const { upvotes: initialUpvotes, comments: initialComments } = useLoaderData();
+  const { upvotes: initialUpvotes, comments: initialComments, upvoteIds: initialUpvoteIds } = useLoaderData();
 
-  const [upvotes, setUpvotes] = useState(initialUpvotes);
+  const [upvotes, setUpvotes] = useState(initialUpvotes || 0);
+  const [upvoteIds, setUpvoteIds] = useState(initialUpvoteIds || []);
   const [comments, setComments] = useState(initialComments || []);
   const [article, setArticle] = useState(null);
 
@@ -65,7 +66,7 @@ export default function ArticlePage() {
 
     <div className="article-body">
       {/* Check if the article was manually imported */}
-      {article.content.includes("manually imported") ? (
+      {article.content && article.content.includes("manually imported") ? (
         <p>
           This article was manually imported. 
           <a 
@@ -79,8 +80,24 @@ export default function ArticlePage() {
         </p>
       ) : (
         /* Otherwise, render the full Medium content */
-        <div dangerouslySetInnerHTML={{ __html: article.content }} />
+        <div dangerouslySetInnerHTML={{ __html: article.content || "Full content for this article is coming soon!" }} />
       )}
+    </div>
+    <div className="medium-disclaimer">
+      <hr />
+      <p>
+        Unfortunately, the Medium API only allows me to import the 10 most recent articles, 
+        but I've written many more! Click 
+        <a 
+          href="https://medium.com/@grisonrf" 
+          target="_blank" 
+          rel="noopener noreferrer"
+        >
+          here
+        </a> 
+        to read what I wrote about <strong>Data Structures and Algorithms</strong>, 
+        <strong>OOP principles</strong>, <strong>Operating Systems</strong>, and more.
+      </p>
     </div>
 
     {user ? <AddCommentForm onAddComment={onAddComment} /> : <p>Log in to add a comment</p>}
