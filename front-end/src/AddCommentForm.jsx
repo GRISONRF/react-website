@@ -5,21 +5,31 @@ export default function AddCommentForm({ onAddComment }) {
   const [commentText, setCommentText] = useState('');
 
   return (
-    <div>
+    <div className="add-comment-form">
       <h3>Add a Comment</h3>
       <label>
-        Name:
-        <input type="text" value={nameText} onChange={e => setNameText(e.target.value)}/>
+        <span>Name</span>
+        <input 
+          type="text" 
+          placeholder="Your name..."
+          value={nameText} 
+          onChange={e => setNameText(e.target.value)}
+        />
       </label>
       <label>
-        Comment:
-        <input type="text" value={commentText} onChange={e => setCommentText(e.target.value)} />
+        <span>Comment</span>
+        <textarea 
+          rows="4"
+          placeholder="Write your thoughts..."
+          value={commentText} 
+          onChange={e => setCommentText(e.target.value)} 
+        />
       </label>
       <button onClick={() => {
         onAddComment({ nameText, commentText });
         setNameText('');
         setCommentText('');
-      }}>Add Comment</button>
+      }}>Post Comment</button>
     </div>
-  )
+  );
 }

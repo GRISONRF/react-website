@@ -34,12 +34,17 @@ export default function ArticlePage() {
   }
 
   async function onUpvoteClicked() {
+    try {
     const token = user && await user.getIdToken();
     const headers = token ? { authtoken: token } : {};
-    const response = await axios.post('/api/articles/' + name + '/upvote', null, { headers });
+    const response = await axios.post(`/api/articles/${name}/upvote`, null, { headers });
     const updatedArticleData = response.data;
     setUpvotes(updatedArticleData.upvotes);
-  }
+    setArticle(prev => ({ ...prev, upvotes: updatedArticleData.upvotes }));
+    } catch (err) {
+      console.error("Upvote failed:", err);
+      alert("Could not upvote. You might have already upvoted this article!");
+  }}
 
   async function onAddComment({ nameText, commentText }) {
     const token = user && await user.getIdToken();

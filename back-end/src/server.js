@@ -60,17 +60,21 @@ app.use(async function(req, res, next) {
 
 app.post('/api/articles/:name/upvote', async (req, res) => {
     const { name } = req.params;
-    const { uid } = req.user;
+    const { uid } = req.user  || {};
 
-    const articles = await db.collection('articles').findOne({ name });
+    if (!uid) return res.status(401).send("Must be logged in to upvote");
+
+    const article = await db.collection('articles').findOne({ name });
+
+    if (!article) return res.sendStatus(404);
 
     const upvoteIds = article.upvoteIds || [];
-    const canUpvote = uid && !upvoteIds.includes(uid);
-
-    if (!canUpvote) {
+    const hasUpvoted = upvoteIds.includes(uid);
+    
+    if (!hasUpvoted) {
         const updatedArticle = await db.collection('articles').findOneAndUpdate({ name }, {
             $inc: { upvotes: 1 },
-            $push: { upvotesId: uid }
+            $push: { upvoteId: uid }
         }, {
             returnDocument: "after",
         });
