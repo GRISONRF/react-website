@@ -8,6 +8,7 @@ import useUser from '../useUser';
 
 export default function ArticlePage() {
   const { name } = useParams();
+  console.log("Article Slug from URL:", name);
   const { upvotes: initialUpvotes, comments: initialComments } = useLoaderData();
 
   const [upvotes, setUpvotes] = useState(initialUpvotes);
@@ -19,7 +20,7 @@ export default function ArticlePage() {
   useEffect(() => {
     async function loadArticle() {
       try {
-        const response = await axios.get("/api/medium-articles/" + name);
+        const response = await axios.get("/api/articles/" + name);
         setArticle(response.data);
       } catch (err) {
         console.error("Failed to load article:", err);
@@ -35,7 +36,7 @@ export default function ArticlePage() {
   async function onUpvoteClicked() {
     const token = user && await user.getIdToken();
     const headers = token ? { authtoken: token } : {};
-    const response = await axios.post('/api/medium-articles/' + name + '/upvote', null, { headers });
+    const response = await axios.post('/api/articles/' + name + '/upvote', null, { headers });
     const updatedArticleData = response.data;
     setUpvotes(updatedArticleData.upvotes);
   }
@@ -43,7 +44,7 @@ export default function ArticlePage() {
   async function onAddComment({ nameText, commentText }) {
     const token = user && await user.getIdToken();
     const headers = token ? { authtoken: token } : {};
-    const response = await axios.post('/api/medium-articles/' + name + '/comments', {
+    const response = await axios.post('/api/articles/' + name + '/comments', {
       postedBy: nameText,
       text: commentText,
     }, { headers });
@@ -53,23 +54,38 @@ export default function ArticlePage() {
 
   return (
     <>
-      <h1>{article.title}</h1>
-      {user && <button onClick={onUpvoteClicked}>Upvote</button>}
-      <p>This article has {upvotes} upvotes</p>
-      {article && (
-        <div className="article-body"
-      dangerouslySetInnerHTML={{ __html: article.content }} />
+    <h1>{article.title}</h1>
+    {user && <button onClick={onUpvoteClicked}>Upvote</button>}
+    <p>This article has {upvotes} upvotes</p>
+
+    <div className="article-body">
+      {/* Check if the article was manually imported */}
+      {article.content.includes("manually imported") ? (
+        <p>
+          This article was manually imported. 
+          <a 
+            href={`https://medium.com/@grisonrf/${name}`} 
+            target="_blank" 
+            rel="noopener noreferrer"
+            style={{ color: '#61dafb', marginLeft: '5px', textDecoration: 'underline' }}
+          >
+            Visit my Medium to read the full text.
+          </a>
+        </p>
+      ) : (
+        /* Otherwise, render the full Medium content */
+        <div dangerouslySetInnerHTML={{ __html: article.content }} />
       )}
-      {user 
-      ? <AddCommentForm onAddComment={onAddComment} />
-      : <p>Log in to add a comment</p>}
-      <CommentsList comments={comments} />
-    </>
+    </div>
+
+    {user ? <AddCommentForm onAddComment={onAddComment} /> : <p>Log in to add a comment</p>}
+    <CommentsList comments={comments} />
+  </>
   );
 }
 
 export async function loader({ params }) {
-  const response = await axios.get('/api/medium-articles/' + params.name);
+  const response = await axios.get('/api/articles/' + params.name);
   const { upvotes, comments } = response.data;
   return { upvotes, comments };
 }

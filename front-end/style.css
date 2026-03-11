@@ -1,55 +1,35 @@
-/* .article-card {
-  display: block;
-  padding: 16px;
-  margin-bottom: 20px;
-  border: 1px solid #ddd;
-  border-radius: 6px;
-  text-decoration: none;
-  color: black;
+/* Container styling */
+.articles-bullet-list {
+    list-style-type: disc;
+    padding-left: 20px;
+    max-width: 800px;
+    margin: 0 auto;
 }
 
-.article-card:hover {
-  background: #f5f5f5;
-} */
-
-.article-body img {
-  max-width: 100%;
+/* Individual list item spacing */
+.articles-bullet-list li {
+    margin-bottom: 12px;
+    color: #61dafb; /* Bullet color */
 }
 
-.article-body p {
-  line-height: 1.6;
+/* The actual clickable link */
+.article-link {
+    color: #61dafb !important; /* Bright React Blue */
+    text-decoration: none;
+    font-size: 1.2rem;
+    font-weight: 500;
+    transition: color 0.2s;
 }
 
-/* Ensure the container is visible */
-.articles-list {
-    display: flex;
-    flex-direction: column;
-    gap: 1.5rem;
-    padding: 20px;
+.article-link:hover {
+    color: #ffffff !important;
+    text-decoration: underline;
 }
 
-/* Style the cards to stand out */
-.article-card {
-    text-decoration: none; /* Removes underline */
-    color: #ffffff;        /* Forces text to white */
-    background-color: #2a2a2a; /* Slightly lighter than the background */
-    padding: 20px;
-    border-radius: 8px;
-    transition: transform 0.2s, background-color 0.2s;
-    border: 1px solid #444;
-}
-
-.article-card:hover {
-    background-color: #333;
-    transform: translateY(-2px);
-}
-
-.article-card h3 {
-    margin: 0 0 10px 0;
-    color: #61dafb; /* React blue or a bright accent color */
-}
-
-.article-card p {
-    color: #ccc; /* Light grey for the description */
-    font-size: 0.9rem;
+/* Small text for upvotes/comments next to the title */
+.article-meta {
+    color: #666;
+    font-size: 0.85rem;
+    margin-left: 15px;
+    font-family: monospace;
 }

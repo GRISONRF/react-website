@@ -95,40 +95,38 @@ app.post('/api/articles/:name/comments', async (req, res) => {
 
 app.get("/api/medium-articles", async (req, res) => {
     try {
-        const feed = await parser.parseURL(MEDIUM_URL);
-
-        const articles = feed.items.map(item => {
-        const slug = item.link.split("/").pop().split("?")[0];
-
-        return {
-            name: slug,
-            title: item.title,
-            description: item.contentSnippet,
-            content: item["content:encoded"]
-        };
-    });
-
-        // Ensure article exists in MongoDB
-        for (const article of articles) {
-            const existing = await db.collection("articles").findOne({
-                name: article.name
-            });
-
-            if (!existing) {
-                await db.collection("articles").insertOne({
-                    name: article.name,
-                    upvotes: 0,
-                    upvoteIds: [],
-                    comments: []
-                });
+        // Wrap the Medium sync in its own try/catch
+        try {
+            const feed = await parser.parseURL(MEDIUM_URL);
+            for (const item of feed.items) {
+                const slug = item.link.split("/").pop().split("?")[0];
+                await db.collection("articles").updateOne(
+                    { name: slug },
+                    { 
+                        $setOnInsert: { 
+                            name: slug,
+                            title: item.title,
+                            description: item.contentSnippet,
+                            content: item["content:encoded"],
+                            upvotes: 0,
+                            upvoteIds: [],
+                            comments: []
+                        } 
+                    },
+                    { upsert: true }
+                );
             }
+        } catch (mediumErr) {
+            console.log("⚠️ Medium Sync failed (Rate Limited), loading from DB only.");
         }
 
-        res.json(articles);
+        // ALWAYS return the DB results, regardless of Medium status
+        const allArticles = await db.collection("articles").find({}).toArray();
+        res.json(allArticles);
 
     } catch (err) {
-        console.error(err);
-        res.status(500).json({ error: "Failed to load Medium articles" });
+        console.error("Database Error:", err);
+        res.status(500).json({ error: "Failed to load articles from database" });
     }
 });
 
