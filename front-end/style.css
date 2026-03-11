@@ -227,3 +227,82 @@
 .add-comment-form button:hover {
     background-color: #4fa8c7;
 }
+
+/* Hero Section Layout */
+.home-container {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+    min-height: 70vh;
+    padding: 0 20px;
+}
+
+/* Typography Improvements */
+.home-container h1 {
+    font-size: 3.5rem;
+    margin-bottom: 0.5rem;
+    background: linear-gradient(90deg, #61dafb, #a29bfe);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+}
+
+.home-container h3 {
+    font-size: 1.5rem;
+    color: #888;
+    margin-bottom: 2rem;
+    font-weight: 400;
+}
+
+.home-container p {
+    max-width: 600px;
+    line-height: 1.8;
+    font-size: 1.1rem;
+    color: #cccccc;
+}
+
+/* Container for the buttons to keep them centered and spaced */
+.cta-buttons {
+    display: flex;
+    flex-wrap: wrap; /* Allows buttons to wrap on smaller screens */
+    gap: 15px;
+    margin-top: 30px;
+}
+
+/* Base style for ALL buttons */
+.cta-blue, .cta-black {
+    padding: 12px 24px;
+    border-radius: 8px;
+    text-decoration: none;
+    font-weight: bold;
+    font-size: 1rem;
+    transition: all 0.3s ease; /* Smooth color transition */
+    border: 2px solid #61dafb; /* Blue border for both */
+    display: inline-block;
+    text-align: center;
+    min-width: 160px;
+}
+
+/* The Blue Button (Starts Blue -> Turns Black) */
+.cta-blue {
+    background-color: #61dafb;
+    color: #282c34;
+}
+
+.cta-blue:hover {
+    background-color: #1a1a1a;
+    color: #61dafb;
+    border-color: #61dafb;
+}
+
+/* The Black Button (Starts Black -> Turns Blue) */
+.cta-black {
+    background-color: #1a1a1a;
+    color: #61dafb;
+}
+
+.cta-black:hover {
+    background-color: #61dafb;
+    color: #282c34;
+}
