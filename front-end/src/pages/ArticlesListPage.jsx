@@ -28,6 +28,23 @@ export default function ArticlesListPage() {
         <div className="page-container">
             <h1>Articles</h1>
             <ArticlesList articles={articles} />
+
+            <div className="medium-disclaimer">
+                <hr />
+                <p>
+                    Unfortunately, the Medium API only allows me to import the 10 most recent articles, 
+                    but I've written many more! Click 
+                    <a 
+                    href="https://medium.com/@grisonrf" 
+                    target="_blank" 
+                    rel="noopener noreferrer"
+                    >
+                    here
+                    </a> 
+                    to read what I wrote about <strong>Data Structures and Algorithms</strong>, 
+                    <strong>OOP principles</strong>, <strong>Operating Systems</strong>, and more.
+                </p>
+                </div>
         </div>
     );
 }

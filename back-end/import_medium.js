@@ -11,14 +11,14 @@ async function importFromMedium() {
     try {
         console.log("Fetching articles from Medium RSS...");
         
-        // 1. Fetch your RSS feed
+        // 1. Fetch RSS feed
         const rss = await parse('https://medium.com/feed/@grisonrf');
         
-        // 2. Map the Medium data to your website's format
+        // 2. Map the Medium data to website's format
         const articles = rss.items.map(item => ({
             name: item.link.split('/').pop().split('?')[0], // Creates a slug from the URL
             title: item.title,
-            // 'content:encoded' in RSS contains the full HTML of your article
+            // 'content:encoded' in RSS contains the full HTML of article
             content: item.content || item['content:encoded'] || "Content not found",
             upvotes: 0,
             upvoteIds: [],

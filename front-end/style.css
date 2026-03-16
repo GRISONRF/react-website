@@ -304,7 +304,7 @@
 
 .cta-black:hover {
     background-color: #966106;
-    color: #f964f6
+    color: #f964f6;
 }
 
 .article-body img {
@@ -319,7 +319,7 @@
     padding: 20px;
     background-color: #1a1a1a;
     border-radius: 8px;
-    border-left: 4px solid #61dafb; /* Your blue accent */
+    border-left: 4px solid #fb43b9;
 }
 
 .medium-disclaimer hr {
@@ -335,7 +335,7 @@
 }
 
 .medium-disclaimer a {
-    color: #61dafb;
+    color: #fb43b9;
     text-decoration: underline;
     margin: 0 5px;
     font-weight: bold;
